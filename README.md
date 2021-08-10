@@ -1,4 +1,4 @@
-# Questions And Answers API
+<!-- # Questions And Answers API
 ## Get All Questions For Product
 * GET `/qa/questions/:product_id`
 
@@ -7,7 +7,7 @@
 
 **Success Status Code:** `200`
 
-**Returns:** JSON
+**Returns:** JSON -->
 
 <!-- ```json
     {
