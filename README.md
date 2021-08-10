@@ -11,7 +11,7 @@
 
 ```json
     {
-      [{
+      {
         "question_id": "Number",
         "question_body": "String",
         "question_date": "Date",
@@ -19,7 +19,7 @@
         "question_helpfulness": "Number",
         "reported": "Boolean",
         "answers": {
-          ["id"]: {
+          "id": {
             "id": "Number",
             "body": "String",
             "date": "Date",
@@ -28,6 +28,6 @@
             "photos": ["String"],
           }
         }
-      }]
+      }
     }
 ```
