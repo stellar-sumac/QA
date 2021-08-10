@@ -1,15 +1,15 @@
 # Questions And Answers API
 ## Get All Questions For Product
-* GET `</qa/questions/:product_id>`
+* GET `/qa/questions/:product_id`
 
 **Path Params**
 * product_id	integer	Specifies the product for which to retrieve questions.
 
-**Success Status Code:** `<200>`
+**Success Status Code:** `200`
 
 **Returns:** JSON
 
-<!-- ```json
+```json
     {
       [{
         "question_id": "Number",
@@ -25,9 +25,9 @@
             "date": "Date",
             "answerer_name": "String",
             "helpfulness": "Number",
-            "photos": [],
+            "photos": ["String"],
           }
         }
       }]
     }
-``` -->
+```
