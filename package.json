@@ -1,0 +1,30 @@
+{
+  "name": "qa",
+  "version": "1.0.0",
+  "description": "Questions and Answers Microservice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stellar-sumac/QA.git"
+  },
+  "author": "Tim Adeyemo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stellar-sumac/QA/issues"
+  },
+  "homepage": "https://github.com/stellar-sumac/QA#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "jest": "^27.0.6"
+  }
+}
