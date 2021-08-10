@@ -2,8 +2,8 @@
 ## Get All Questions For Product
 * GET `/qa/questions/:product_id`
 
-**Path Params**
-* product_id	integer	Specifies the product for which to retrieve questions.
+**Path Parameters:**
+* `product_id`	Specifies the product to retrieve questions for.
 
 **Success Status Code:** `200`
 
