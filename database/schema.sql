@@ -1,4 +1,8 @@
+DROP DATABASE IF EXISTS QA;
+
 CREATE DATABASE QA;
+
+USE QA;
 
 CREATE TABLE questions (
   id SERIAL PRIMARY KEY,
@@ -29,3 +33,4 @@ CREATE TABLE photos (
   answer_id INT FOREIGN KEY REFERENCES
   answer(id),
 );
+
