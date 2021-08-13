@@ -9,28 +9,7 @@
 
 **Returns:** JSON
 
-```json 
+```json
     {
-        {
-      [{
-        "question_id": "Number",
-        "question_body": "String",
-        "question_date": "Date",
-        "asker_name": "String",
-        "question_helpfulness": "Number",
-        "reported": "Boolean",
-        "answers": {
-          "id": {
-            "id": "Number",
-            "body": "String",
-            "date": "Date",
-            "answerer_name": "String",
-            "helpfulness": "Number",
-            "photos": [],
-          }
-        }
-      }]
     }
-  }
-
 ```
