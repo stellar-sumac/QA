@@ -1,36 +1,26 @@
-DROP DATABASE IF EXISTS QA;
-
-CREATE DATABASE QA;
-
-USE QA;
-
 CREATE TABLE questions (
   id SERIAL PRIMARY KEY,
   question_body TEXT NOT NULL,
-  question_date TIMESTAMPZ DEFAULT Now(),
+  question_date TIMESTAMP DEFAULT NOW(),
   asker_name VARCHAR(60) NOT NULL,
   asker_email VARCHAR(60) NOT NULL,
   question_helpfulness INTEGER DEFAULT 0,
-  reported BOOLEAN DEFAULT 0,
-  product_id INT FOREIGN KEY REFERENCES products(id),
-);
-
-CREATE TABLE answer (
+  reported BOOLEAN DEFAULT false,
+  product_id INTEGER
+)
+CREATE TABLE answers (
   id SERIAL PRIMARY KEY,
-  answer_body TEXT NULL,
-  answer_date TIMESTAMPZ,
+  answer_body TEXT NOT NULL,
+  answer_date TIMESTAMP DEFAULT NOW(),
   answerer_name VARCHAR(60) NOT NULL,
   answerer_email VARCHAR(60) NOT NULL,
-  answer_helpfulness INTEGER NOT NULL,
-  reported BOOLEAN NOT NULL,
-  question_id INT FOREIGN KEY REFERENCES questions(id),
-);
-
+  answer_helpfulness INTEGER DEFAULT 0,
+  reported BOOLEAN DEFAULT false,
+  question_id INTEGER REFERENCES questions (id)
+)
 CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
-  answer_id INT NOT NULL,
   url TEXT,
-  answer_id INT FOREIGN KEY REFERENCES
-  answer(id),
+  answer_id INTEGER REFERENCES
+  answer (id)
 );
-

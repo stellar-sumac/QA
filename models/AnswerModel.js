@@ -1,17 +1,9 @@
 const { Pool } = require('pg');
+const { config } = require('../database/config');
 /* eslint-disable */
-// const insertQuestion = ( body, name, email, pid) => {
-//   const [new_user] = await sql`
-//     insert into questions (answer_body, asker_name, asker_email, product_id) values`
-// };
 
-const pool = new Pool({
-  user: 'madeyemo',
-  host: 'localhost',
-  port: 5432,
-  database: 'qa',
-  password: '',
-});
+
+const pool = new Pool({ config });
 
 const getAnswers = (callback) => {
   pool.query("SELECT * FROM answers", (err, results) => {
@@ -63,8 +55,41 @@ const seedAnswers = ({
   });
 };
 
+const seedPhotos = ({
+  id,
+  url,
+  answer_id,
+}, callback) => {
+
+  let params = [id, url, answer_id ];
+
+  pool.query("INSERT INTO photos(id, url, answer_id) VALUES( $1, $2, $3)", params, (err, status) => {
+    if (err) {
+      console.log(`Failed on insert for photo id ${id} from ${answer_id}:\n${err}`);
+      callback(err, status);
+    } else {
+      callback(null, status);
+    }
+  });
+};
+
+const getPhotos = () => {
+  pool.query("SELECT * FROM photos", (err, res) => {
+    if (err) {
+      console.log('Failed Getting Photos at Model layer');
+      callback(err, results);
+    } else {
+      callback(null, results.rows);
+    }
+  })
+}
+
+
+
 module.exports = {
   getAnswers,
   addAnswer,
   seedAnswers,
+  seedPhotos,
+  getPhotos,
 };

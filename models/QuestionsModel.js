@@ -1,17 +1,13 @@
 const { Pool } = require('pg');
+const { config } = require('../database/config');
 
 // const insertQuestion = ( body, name, email, pid) => {
 //   const [new_user] = await sql`
 //     insert into questions (question_body, asker_name, asker_email, product_id) values`
 // };
 
-const pool = new Pool({
-  user: 'madeyemo',
-  host: 'localhost',
-  port: 5432,
-  database: 'qa',
-  password: '',
-});
+const pool = new Pool({ config });
+
 
 const getQuestion = (callback) => {
   pool.query("SELECT * FROM questions", (err, results) => {
@@ -23,6 +19,13 @@ const getQuestion = (callback) => {
     }
   });
 };
+
+// const getQuestions = (pid) => {
+//   const results = [];
+//   pool.query(`SELECT * FROM questions WHERE product_id =${pid}`, (err) => {
+
+//   });
+// };
 
 const addQuestion = (body, name, email, pid, callback) => {
   pool.query(`INSERT INTO questions(question_body, asker_name, asker_email, product_id)

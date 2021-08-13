@@ -21,21 +21,21 @@ const { seedAnswers, getAnswers, seedPhotos, getPhotos } = require('../models/An
 //     console.log('CSV file successfully processed');
 //   });
 
-// fs.createReadStream('../seeds/answers.csv')
-//   .pipe(csv())
-//   .on('data', (row) => {
-//     seedAnswers(row, (err) => {
-//       if (err) {
-//         console.error(err.stack);
-//       } else {
-//         console.log(`Good Insert On Record: ${row.id}`);
-//       }
-//     });
-//   })
-//   .on('end', () => {
-//     getAnswers(console.log);
-//     console.log('CSV file successfully processed');
-//   });
+fs.createReadStream('../seeds/answers.csv')
+  .pipe(csv())
+  .on('data', (row) => {
+    seedAnswers(row, (err) => {
+      if (err) {
+        console.error(err.stack);
+      } else {
+        console.log(`Good Insert On Record: ${row.id}`);
+      }
+    });
+  })
+  .on('end', () => {
+    getAnswers(console.log);
+    console.log('CSV file successfully processed');
+  });
 
 // fs.createReadStream('../seeds/answers_photos.csv')
 //   .pipe(csv())
