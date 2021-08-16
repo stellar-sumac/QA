@@ -1,4 +1,4 @@
-const { pool } = require('../database/index');
+const { pool } = require('../index');
 
 // each seed function extracts row data, transforms date if appl, and inserts the row once a client is available from the pool
 const seedQuestion = async ({
