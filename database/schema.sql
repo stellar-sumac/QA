@@ -1,11 +1,11 @@
 DROP TABLE IF EXISTS photos;
-DROP TABLE IF EXISTS answers;
-DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS answers CASCADE;
+DROP TABLE IF EXISTS questions CASCADE;
 
 CREATE TABLE questions (
   id SERIAL PRIMARY KEY,
   question_body TEXT NOT NULL,
-  question_date TIMESTAMP DEFAULT NOW(),
+  question_date TIMESTAMPZ DEFAULT NOW(),
   asker_name VARCHAR(60) NOT NULL,
   asker_email VARCHAR(60) NOT NULL,
   question_helpfulness INTEGER DEFAULT 0,
@@ -16,7 +16,7 @@ CREATE TABLE questions (
 CREATE TABLE answers (
   id SERIAL PRIMARY KEY,
   answer_body TEXT NOT NULL,
-  answer_date TIMESTAMP DEFAULT NOW(),
+  answer_date TIMESTAMPZ DEFAULT NOW(),
   answerer_name VARCHAR(60) NOT NULL,
   answerer_email VARCHAR(60) NOT NULL,
   answer_helpfulness INTEGER DEFAULT 0,
@@ -30,5 +30,5 @@ CREATE TABLE photos (
   answer_id INTEGER NOT NULL
 );
 
-ALTER TABLE answer ADD FOREIGN KEY (question_id) REFERENCES questions (id);
+ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id);
 ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);

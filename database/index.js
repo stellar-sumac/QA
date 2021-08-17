@@ -1,41 +1,35 @@
-//const postgres = require('postgres');
-const { Pool } = require('pg');
-const path = require('path');
-const config = require('./config');
 const fs = require('fs');
-const readline = require('readline');
-
-
+const path = require('path');
+const { Pool } = require('pg');
+const config = require('./config');
 
 const pool = new Pool(config);
-// const sql = postgres(config);
 
-// sql.file(path.join(__dirname, 'schema.sql'), [], {
-//   cache: true,
-// });
-//   .then(() => console.log('success'))
-//   .catch(e => console.error(e));
+const loadSchema = () => {
+  const parseBySemicolon = filename =>
+      fs.readFileSync(filename)
+      .toString('UTF8')
+      .split(';');
 
-const readSqlBySemi = filename =>
-   fs.readFileSync(filename)
-   .toString('UTF8')
-   .split(';');
+  // Reads SQL file stream by semicolon, executes commands squentially to load schema
+  const schemaCmdExecute = async () => {
+    const commands = parseBySemicolon(path.join(__dirname, 'schema.sql'));
+    const client = await pool.connect();
 
-const commands = readSqlBySemi(path.join(__dirname, 'schema.sql'))
-const toExecute = commands.map(command => pool.query(command));
+    try {
+      const toExecute = commands.map(command => client.query(command))
+      Promise.all(toExecute)
+        .then(() => console.log('Success on Schema Load!'))
+        .then(() =>client.release())
+        .catch(e => console.error(e));
+    } catch (err) {
+      err => console.log(`Error on Schema Load to DB: \n${err.stack}`);
+    }
+  }
+  schemaCmdExecute();
+}
 
-Promise.all(toExecute)
-  .then(() => console.log('success'))
-  .then(() => pool.end())
-  .catch(e => console.error(e));
-
-
-
-
-// commands.forEach(command => {
-//   pool.query(command)
-// })
-
-
-
-module.exports = pool;
+module.exports = {
+  pool,
+  loadSchema,
+};
