@@ -4,11 +4,11 @@ const { pool } = require('../../database/index');
 const seedQuestion = async ({
   id,
   body,
-  asker_name,
-  asker_email,
   helpful,
   reported,
   product_id,
+  asker_name,
+  asker_email,
   date_written,
 }) => {
 
@@ -25,7 +25,6 @@ const seedQuestion = async ({
   } catch (err) {
     console.error(`Failed on insert for product id ${product_id} from ${asker_name} with body - ${body}:\n${err.stack}`);
   } finally {
-    // console.log(`Good Insert On Record: ${id}`);
     client.release();
   }
 }
@@ -33,12 +32,12 @@ const seedQuestion = async ({
 const seedAnswers = async ({
   id,
   body,
-  answerer_name,
-  answerer_email,
   helpful,
   reported,
   question_id,
   date_written,
+  answerer_name,
+  answerer_email,
 }) => {
 
   const client = await pool.connect();
@@ -54,7 +53,6 @@ const seedAnswers = async ({
   } catch (err) {
     console.error(`Failed on insert for answer id ${id} from question ${question_id}:\n${err.stack}`);
   } finally {
-    // console.log(`Good Insert On Record: ${id}`);
     client.release();
   }
 }
@@ -74,7 +72,6 @@ const seedPhotos = async ({
   } catch (err) {
     console.error(`Failed on insert for photo id ${id} from ${answer_id}:\n${err.stack}`);
   } finally {
-    // console.log(`Good Insert On Record: ${id}`);
     client.release();
   }
 }
