@@ -1,3 +1,16 @@
+const seedQuestionsQuery = `
+INSERT INTO questions(id, question_body, question_date, asker_name, asker_email, question_helpfulness, reported, product_id)
+  VALUES( $1, $2, $3, $4, $5, $6, $7, $8)
+`;
+
+const seedAnswersQuery = `
+INSERT INTO answers(id, answer_body, answer_date, answerer_name, answerer_email, answer_helpfulness, reported, question_id) VALUES( $1, $2, $3, $4, $5, $6, $7, $8)
+`;
+
+const seedPhotosQuery = `
+INSERT INTO photos(id, url, answer_id) VALUES( $1, $2, $3)
+`;
+
 const getQuestionsQuery = `
 SELECT json_build_object(
   'product_id', $1::integer,
@@ -80,9 +93,12 @@ UPDATE answers
 
 module.exports = {
   addAnswerQuery,
+  seedPhotosQuery,
   getAnswersQuery,
+  seedAnswersQuery,
   addQuestionQuery,
   getQuestionsQuery,
   reportAnswerQuery,
+  seedQuestionsQuery,
   markAnsHelpfulQuery,
 };
