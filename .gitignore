@@ -124,3 +124,7 @@ dist
 
 # API keys
 config.js
+
+# Testing
+artillery.yml
+newrelic.js
