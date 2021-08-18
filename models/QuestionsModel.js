@@ -19,7 +19,7 @@ const getQuestionsByProduct = async (pid, page, count) => {
         'question_helpfulness', q.question_helpfulness,
         'reported', $2::boolean,
         'answers', (
-          SELECT jsonb_object_agg(
+          SELECT COALESCE (jsonb_object_agg(
             a.id, json_build_object(
               'id', a.id,
               'body', a.answer_body,
@@ -27,12 +27,15 @@ const getQuestionsByProduct = async (pid, page, count) => {
               'answerer_name', a.answerer_name,
               'helpfulness', a.answer_helpfulness,
               'photos', (
-                SELECT jsonb_agg(
-                  p.url
-                )::jsonb FROM photos p WHERE a.id = p.answer_id
+                SELECT COALESCE (jsonb_agg(
+                  jsonb_build_object(
+                    'id', p.id,
+                    'url', p.url
+                  )
+                ), '[]')::jsonb FROM photos p WHERE a.id = p.answer_id
               )
             )
-          )::jsonb FROM answers a WHERE a.reported != true AND q.id = a.question_id
+          ), '[]')::jsonb FROM answers a WHERE a.reported != true AND q.id = a.question_id
         )
       )
     )

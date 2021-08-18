@@ -23,12 +23,12 @@ const getAnswersByQuestion = async (qid, page = 1, count = 5) => {
         'helpfulness', a.answer_helpfulness,
         'reported', $4::boolean,
         'photos', (
-          SELECT jsonb_agg(
+          SELECT COALESCE (jsonb_agg(
             jsonb_build_object(
               'id', p.id,
               'url', p.url
             )
-          )::jsonb FROM photos p WHERE a.id = p.answer_id
+          ), '[]')::jsonb FROM photos p WHERE a.id = p.answer_id
         )
       )
     )
@@ -132,12 +132,9 @@ const getPhotos = () => {
   })
 }
 
-
-
 module.exports = {
   addAnswer,
   getPhotos,
-  seedPhotos,
   getAnswers,
   seedAnswers,
   reportAnswer,
