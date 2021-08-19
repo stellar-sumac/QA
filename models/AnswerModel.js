@@ -1,142 +1,82 @@
-const { Pool } = require('pg');
-const config = require('../database/config');
-/* eslint-disable */
+const { pool } = require('../database/index');
 
+const {
+  isValidId,
+  isValidQueryParams,
+} = require('../helpers/validation');
 
-const pool = new Pool(config);
+const { getAnswersQuery } = require('../helpers/queries');
+/* eslint camelcase: 0 */
+/* eslint no-console: 0 */
 
 const getAnswersByQuestion = async (qid, page = 1, count = 5) => {
-  const client = await pool.connect();
-  let results = null;
+  if (!isValidId(qid)) return `Cant get answers for question id: ${qid}. Must be of integer type`;
+  if (isValidQueryParams(page) || isValidQueryParams(count)) return `Bad Query Parameters, Check page: ${page} and count ${count}`;
 
-  const getAnswersQuery =`
-  SELECT json_build_object(
-    'question', $5::text,
-    'page', $2::integer,
-    'count', $3::integer,
-    'results', json_agg(
-      jsonb_build_object(
-        'answer_id', a.id,
-        'body', a.answer_body,
-        'date', a.answer_date,
-        'answerer_name', a.answerer_name,
-        'helpfulness', a.answer_helpfulness,
-        'reported', $4::boolean,
-        'photos', (
-          SELECT COALESCE (jsonb_agg(
-            jsonb_build_object(
-              'id', p.id,
-              'url', p.url
-            )
-          ), '[]')::jsonb FROM photos p WHERE a.id = p.answer_id
-        )
-      )
-    )
-  )::jsonb FROM answers a WHERE question_id=$1 AND a.reported != true
-  `
+  const client = await pool.connect();
 
   try {
-    results = await client.query(getAnswersQuery, [qid, page, count, false, (qid + '')])
+    const results = await client.query(getAnswersQuery, [qid, page, count, false, (`${qid}`)]);
+    return results.rows[0].json_build_object;
   } catch (err) {
-    console.error(`Failed getting answers list for question id ${qid} with error:\n${err}`)
+    return `Failed getting answers list for question id ${qid} with error:\n${err}`;
   } finally {
     client.release();
-    return results;
   }
-}
+};
 
 const markAnswerHelpful = async (aid) => {
+  const markAnsHelpfulQuery = `
+  UPDATE answers SET answer_helpfulness = answer_helpfulness + 1 WHERE id = $1
+  `;
   const client = await pool.connect();
 
-  const markAnsHelpfulQuery =`UPDATE answers SET answer_helpfulness = answer_helpfulness + 1 WHERE id = $1`
   try {
-    await client.query(markAnsHelpfulQuery, [aid])
+    await client.query(markAnsHelpfulQuery, [aid]);
   } catch (err) {
-    console.error(`Failed marking answer helpful for answer id ${aid} with error:\n${err}`)
+    console.error(`Failed marking answer helpful for answer id ${aid} with error:\n${err}`);
   } finally {
     client.release();
   }
-}
+};
 
 const reportAnswer = async (aid) => {
+  const reportAnswerQuery = `
+  UPDATE answers SET reported = true WHERE id = $1
+  `;
   const client = await pool.connect();
 
-  const reportAnswerQuery =`UPDATE answers SET reported = true WHERE id = $1`
   try {
-    await client.query(reportAnswerQuery, [aid])
+    await client.query(reportAnswerQuery, [aid]);
   } catch (err) {
-    console.error(`Failed reporting answer for answer id ${aid} with error:\n${err}`)
+    console.error(`Failed reporting answer for answer id ${aid} with error:\n${err}`);
   } finally {
     client.release();
   }
-}
-
-const getAnswers = (callback) => {
-  pool.query("SELECT * FROM answers", (err, results) => {
-    if (err) {
-      console.log('Failed Getting Answers at Model layer');
-      callback(err, results);
-    } else {
-      callback(null, results.rows);
-    }
-  });
 };
 
-const addAnswer = ({ answer_body, answerer_name, answerer_email, question_id }, callback) => {
-  pool.query(`INSERT INTO questions(answer_body, answerer_name, asker_email, question_id)
-  VALUES(${answer_body}, ${answerer_name}, ${answerer_email}, ${question_id})`, (err, status) => {
-    if (err) {
-      console.log(`Failed on insert for product id ${question_id} from ${answerer_name} with body - ${answer_body}:\n${err}`);
-      callback(err, status);
-    } else {
-      callback(null, status);
-    }
-  });
-};
-
-const seedAnswers = ({
-  id,
-  body,
-  helpful,
-  reported,
+const addAnswer = async ({
+  answer_body,
   question_id,
-  date_written,
   answerer_name,
   answerer_email,
-}, callback) => {
+}) => {
+  const client = await pool.connect();
 
-  const d = new Date(0);
-  d.setUTCMilliseconds(Number(date_written));
-  date_written = d;
+  const addAnswerQuery = `INSERT INTO answers(answer_body, answerer_name, asker_email, question_id)
+  VALUES($1, $2, $3, $4)`;
 
-  let params = [id, body, date_written, answerer_name, answerer_email, helpful, reported, question_id ];
-
-  pool.query("INSERT INTO answers(id, answer_body, answer_date, answerer_name, answerer_email, answer_helpfulness, reported, question_id) VALUES( $1, $2, $3, $4, $5, $6, $7, $8)", params, (err, status) => {
-    if (err) {
-      console.log(`Failed on insert for question id ${question_id} from ${answerer_name} with body - ${body}:\n${err}`);
-      callback(err, status);
-    } else {
-      callback(null, status);
-    }
-  });
+  try {
+    await client.query(addAnswerQuery, [answer_body, answerer_name, answerer_email, question_id]);
+  } catch (err) {
+    console.error(`Failed on insert for product id ${question_id} from ${answerer_name} with body - ${answer_body}:\n${err}`);
+  } finally {
+    client.release();
+  }
 };
-
-const getPhotos = () => {
-  pool.query("SELECT * FROM photos", (err, res) => {
-    if (err) {
-      console.log('Failed Getting Photos at Model layer');
-      callback(err, results);
-    } else {
-      callback(null, results.rows);
-    }
-  })
-}
 
 module.exports = {
   addAnswer,
-  getPhotos,
-  getAnswers,
-  seedAnswers,
   reportAnswer,
   markAnswerHelpful,
   getAnswersByQuestion,
