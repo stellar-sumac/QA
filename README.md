@@ -40,7 +40,7 @@ Query Parameters
             "helpfulness": "Number",
             "photos": [{
                 "id": "Number",
-                "url": ["urlplaceholder/answer_5_photo_number_1.jpg"]
+                "url": "urlplaceholder/answer_5_photo_number_1.jpg"
             }]
           }
         }
@@ -84,7 +84,7 @@ Query Parameters
         "answers": {
           "photos": [{
             "id": "Number",
-            "url": ["urlplaceholder/answer_5_photo_number_1.jpg"]
+            "url": "urlplaceholder/answer_5_photo_number_1.jpg"
           }]
         }
       }]
