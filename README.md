@@ -31,7 +31,6 @@ Query Parameters
         "question_date": "Date",
         "asker_name": "String",
         "question_helpfulness": "Number",
-        "reported": "Boolean",
         "answers": {
           "id": {
             "id": "Number",
@@ -39,7 +38,10 @@ Query Parameters
             "date": "Date",
             "answerer_name": "String",
             "helpfulness": "Number",
-            "photos": [],
+            "photos": [{
+                "id": "Number",
+                "url": ["urlplaceholder/answer_5_photo_number_1.jpg"]
+            }]
           }
         }
       }]
@@ -74,21 +76,16 @@ Query Parameters
       "page": "Number",
       "count": "Number",
       "results": [{
-        "question_id": "Number",
-        "question_body": "String",
-        "question_date": "Date",
-        "asker_name": "String",
-        "question_helpfulness": "Number",
-        "reported": "Boolean",
+        "answer_id": "Number",
+        "body": "String",
+        "date": "Date",
+        "answerer_name": "String",
+        "helpfulness": "Number",
         "answers": {
-          "id": {
+          "photos": [{
             "id": "Number",
-            "body": "String",
-            "date": "Date",
-            "answerer_name": "String",
-            "helpfulness": "Number",
-            "photos": [],
-          }
+            "url": ["urlplaceholder/answer_5_photo_number_1.jpg"]
+          }]
         }
       }]
     }
