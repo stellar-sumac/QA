@@ -32,3 +32,7 @@ CREATE TABLE photos (
 
 ALTER TABLE answers ADD FOREIGN KEY (question_id) REFERENCES questions (id);
 ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
+
+CREATE INDEX photos_answerid on photos(answer_id);
+CREATE INDEX answers_questionid on answers(question_id);
+CREATE INDEX questions_productid on questions(product_id);
