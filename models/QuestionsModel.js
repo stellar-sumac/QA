@@ -54,17 +54,6 @@ const reportQuestion = async (qid) => {
   }
 };
 
-// const getQuestions = (callback) => {
-//   pool.query("SELECT * FROM questions", (err, results) => {
-//     if (err) {
-//       console.log('it broke');
-//       callback(err, results);
-//     } else {
-//       callback(null, results.rows);
-//     }
-//   });
-// };
-
 const addQuestion = async ({
   pid,
   body,
