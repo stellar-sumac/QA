@@ -128,3 +128,4 @@ config.js
 # Testing
 artillery.yml
 newrelic.js
+docker-compose.yml

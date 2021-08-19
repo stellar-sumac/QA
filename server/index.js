@@ -39,7 +39,6 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
 });
 
 app.get('/qa/questions/:id', (req, res) => {
-  console.log(req.params.id);
   getQuestionsByProduct(req.params.id)
     .then((data) => {
       res.status(200).send(data);
