@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server/index.js",
-    "test": "artillery run test.yml"
+    "test": "artillery run test.yml",
+    "db-start": "node helpers/db-start.js",
+    "db-load": "node helpers/db-etl.js"
   },
   "repository": {
     "type": "git",
