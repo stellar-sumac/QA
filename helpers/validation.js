@@ -1,8 +1,11 @@
-const isValidId = (id) => !(Number.isInteger(Number(id)));
+const isValidId = (id) => (Number.isInteger(Number(id)));
 
-const isValidQuery = (queryParam) => Number.isNaN(Number(queryParam));
+const isValidQueryParams = (queryParam) => Number.isNaN(Number(queryParam));
 
 const isValidBody = (body, name, email) => {
+  // checks for @,
+  // followed by alphanumerics for domain,
+  // then a dot followed by any set of alhpanumerics,
   if (!/^[^@]+@\w+(\.\w+)+\w$/.test(email)) {
     return false;
   }
@@ -18,11 +21,8 @@ const isValidPhotos = (photos) => {
 };
 
 module.exports = {
-  validateGetParams: ({ id, page = 1, count = 5 }) => {
-    if (!isValidId(id) || isValidQuery(page) || isValidQuery(count)) return {};
-    return { id, page, count };
-  },
   isValidId,
   isValidBody,
   isValidPhotos,
+  isValidQueryParams,
 };

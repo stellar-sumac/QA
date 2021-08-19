@@ -14,14 +14,16 @@ INSERT INTO photos(id, url, answer_id) VALUES( $1, $2, $3)
 const getQuestionsQuery = `
 SELECT json_build_object(
   'product_id', $1::integer,
-  'results', json_agg(
+  'page', $2::integer,
+  'count', $3::integer,
+  'results', COALESCE (json_agg(
     jsonb_build_object(
       'question_id', q.id,
       'question_body', q.question_body,
       'question_date', q.question_date,
       'asker_name', q.asker_name,
       'question_helpfulness', q.question_helpfulness,
-      'reported', $2::boolean,
+      'reported', $4::boolean,
       'answers', (
         SELECT COALESCE (jsonb_object_agg(
           a.id, json_build_object(
@@ -42,15 +44,15 @@ SELECT json_build_object(
         ), '[]')::jsonb FROM answers a WHERE a.reported != true AND q.id = a.question_id
       )
     )
-  )
-)::jsonb FROM questions q WHERE product_id=$1 AND q.reported != true
+  ), '[]')
+)::jsonb FROM questions q WHERE product_id=$1 AND q.reported != true LIMIT $3
 `;
 const getAnswersQuery = `
 SELECT json_build_object(
   'question', $5::text,
   'page', $2::integer,
   'count', $3::integer,
-  'results', json_agg(
+  'results', COALESCE ( json_agg(
     jsonb_build_object(
       'answer_id', a.id,
       'body', a.answer_body,
@@ -67,7 +69,7 @@ SELECT json_build_object(
         ), '[]')::jsonb FROM photos p WHERE a.id = p.answer_id
       )
     )
-  )
+  ), '[]')
 )::jsonb FROM answers a WHERE question_id=$1 AND a.reported != true
 `;
 
