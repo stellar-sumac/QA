@@ -1,0 +1,6 @@
+.env
+node_modules
+npm-debug.log
+data/answers.csv
+data/questions.csv
+data/answers_photos.csv
