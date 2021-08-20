@@ -29,9 +29,8 @@ const seedQuestion = async ({
       body,
       dateUTC,
       asker_name,
-      product_id,
       asker_email,
-      helpful, reported,
+      helpful, reported, product_id,
     ];
 
     await client.query(seedQuestionsQuery, params);
@@ -60,10 +59,9 @@ const seedAnswers = async ({
       id,
       body,
       dateUTC,
-      question_id,
       answerer_name,
       answerer_email,
-      helpful, reported,
+      helpful, reported, question_id,
     ];
 
     await client.query(seedAnswersQuery, params);

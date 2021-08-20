@@ -1,4 +1,4 @@
-const loadSchema = require('../database/index');
+const { loadSchema } = require('../database/index');
 
 console.log('Initializing Database...');
 const start = performance.now();

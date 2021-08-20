@@ -1,4 +1,5 @@
 const express = require('express');
+//require('newrelic');
 
 const {
   addQuestion,
@@ -27,8 +28,13 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
+app.get(`/${process.env.LOADER_IO}`, (req, res) => {
+  res.send(process.env.LOADER_IO);
+});
+
 // Get Routes
 app.get('/qa/questions/:question_id/answers', (req, res) => {
+  console.log(req.params.question_id);
   getAnswersByQuestion(req.params.question_id)
     .then((data) => {
       res.status(200).send(data);

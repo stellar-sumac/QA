@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS questions CASCADE;
 CREATE TABLE questions (
   id SERIAL PRIMARY KEY,
   question_body TEXT NOT NULL,
-  question_date TIMESTAMPZ DEFAULT NOW(),
+  question_date TIMESTAMP DEFAULT NOW(),
   asker_name VARCHAR(60) NOT NULL,
   asker_email VARCHAR(60) NOT NULL,
   question_helpfulness INTEGER DEFAULT 0,
@@ -16,7 +16,7 @@ CREATE TABLE questions (
 CREATE TABLE answers (
   id SERIAL PRIMARY KEY,
   answer_body TEXT NOT NULL,
-  answer_date TIMESTAMPZ DEFAULT NOW(),
+  answer_date TIMESTAMP DEFAULT NOW(),
   answerer_name VARCHAR(60) NOT NULL,
   answerer_email VARCHAR(60) NOT NULL,
   answer_helpfulness INTEGER DEFAULT 0,
@@ -36,3 +36,4 @@ ALTER TABLE photos ADD FOREIGN KEY (answer_id) REFERENCES answers (id);
 CREATE INDEX photos_answerid on photos(answer_id);
 CREATE INDEX answers_questionid on answers(question_id);
 CREATE INDEX questions_productid on questions(product_id);
+
