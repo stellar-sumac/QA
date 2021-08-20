@@ -1,5 +1,4 @@
 const express = require('express');
-const redis = require('redis');
 //require('newrelic');
 
 const {
@@ -21,20 +20,6 @@ const {
 const app = express();
 const port = process.env.PORT || 3000;
 
-const redisConfig = {
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: process.env.REDIS_PORT || 6379,
-}
-
-const client = redis.createClient(
-  redisConfig.host,
-  redisConfig.port,
-);
-
-client.on('connect', () => {
-  console.log('Redis running!');
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -50,25 +35,13 @@ app.get(`/${process.env.LOADER_IO}`, (req, res) => {
 // Get Routes
 app.get('/qa/questions/:question_id/answers', (req, res) => {
   console.log(req.params.question_id);
-  try {
-    client.get('qid', (err, dataCached) => {
-      if (err) throw err;
-      if (dataCached) {
-        console.log('Question id key found!!');
-        res.status(200).send(dataCached);
-      } else {
-        getAnswersByQuestion(req.params.question_id)
-          .then((data) => {
-            res.status(200).send(data);
-          })
-          .catch((e) => {
-            res.status(500).send(e);
-          });
-      }
+  getAnswersByQuestion(req.params.question_id)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((e) => {
+      res.status(500).send(e);
     });
-  } catch (e) {
-    res.status(500).send(e);
-  }
 });
 
 app.get('/qa/questions/:id', (req, res) => {
