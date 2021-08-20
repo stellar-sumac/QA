@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { Pool } = require('pg');
 require('dotenv').config();
-
+/* eslint implicit-arrow-linebreak: 0 */
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -12,15 +12,14 @@ const pool = new Pool({
 });
 
 const loadSchema = () => {
-  const parseBySemicolon = (filename) => {
+  const parseBySemicolon = (filename) =>
     fs.readFileSync(filename)
       .toString('UTF8')
       .split(';');
-  };
 
   // Reads SQL file stream by semicolon, executes commands squentially to load schema
-  const schemaCmdExecute = async () => {
-    const commands = parseBySemicolon(path.join(__dirname, 'schema.sql'));
+  const schemaCmdExecute = async (schema) => {
+    const commands = parseBySemicolon(path.join(__dirname, schema));
     const client = await pool.connect();
 
     try {
@@ -31,10 +30,12 @@ const loadSchema = () => {
         .catch((e) => console.error(e));
     } catch (err) {
       console.error(`Error on Schema Load to DB: \n${err.stack}`);
+    } finally {
+      client.release();
     }
   };
 
-  schemaCmdExecute();
+  schemaCmdExecute('schema.sql');
 };
 
 module.exports = {
