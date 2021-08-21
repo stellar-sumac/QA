@@ -42,8 +42,8 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
     res.status(500).send(`Cant get answers for question id: ${req.params.question_id}. Must be of integer type`);
   } else {
     getAnswersByQuestion(req.params.question_id)
-      .then(() => {
-        res.status(201).send();
+      .then((data) => {
+        res.status(201).send(data);
       })
       .catch((e) => {
         res.status(500).send(e);
@@ -56,8 +56,8 @@ app.get('/qa/questions/:id', (req, res) => {
     res.status(500).send(`Cant get questions for product id: ${req.params.id}. Must be of integer type`);
   } else {
     getQuestionsByProduct(req.params.id)
-      .then(() => {
-        res.status(201).send();
+      .then((data) => {
+        res.status(201).send(data);
       })
       .catch((e) => {
         res.status(500).send(e);
