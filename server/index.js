@@ -37,7 +37,6 @@ app.get(`/${process.env.LOADER_IO}`, (req, res) => {
 
 // Get Routes
 app.get('/qa/questions/:question_id/answers', (req, res) => {
-  console.log(req.params.question_id);
   if (!isValidId(req.params.question_id)) {
     res.status(500).send(`Cant get answers for question id: ${req.params.question_id}. Must be of integer type`);
   } else {
@@ -46,6 +45,7 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
         res.status(201).send(data);
       })
       .catch((e) => {
+	console.log(e);
         res.status(500).send(e);
       });
   }
