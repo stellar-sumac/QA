@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev:start": "nodemon server/index.js",
+    "start:dev": "nodemon server/index.js",
     "test:artillery": "artillery run test.yml",
     "db-start": "node helpers/db-start.js",
     "db-load": "node helpers/db-etl.js"

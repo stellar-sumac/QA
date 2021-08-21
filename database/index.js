@@ -17,7 +17,6 @@ const loadSchema = () => {
       .toString('UTF8')
       .split(';');
 
-
   // Reads SQL file stream by semicolon, executes commands squentially to load schema
   const schemaCmdExecute = async (schema) => {
     const commands = parseBySemicolon(path.join(__dirname, schema));
@@ -38,7 +37,6 @@ const loadSchema = () => {
 
   schemaCmdExecute('schema.sql');
 };
-
 
 module.exports = {
   pool,

@@ -1,7 +1,6 @@
 const { pool } = require('../database/index');
 
 const {
-  isValidId,
   isValidQueryParams,
 } = require('../helpers/validation');
 
@@ -10,7 +9,6 @@ const { getAnswersQuery } = require('../helpers/queries');
 /* eslint no-console: 0 */
 
 const getAnswersByQuestion = async (qid, page = 1, count = 5) => {
-  if (!isValidId(qid)) return `Cant get answers for question id: ${qid}. Must be of integer type`;
   if (isValidQueryParams(page) || isValidQueryParams(count)) return `Bad Query Parameters, Check page: ${page} and count ${count}`;
 
   const client = await pool.connect();
